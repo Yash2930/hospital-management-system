@@ -6,10 +6,9 @@ import com.hms.hospital_management_system.service.PatientService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/patients")
@@ -23,6 +22,21 @@ public class PatientController {
 
         return patientService.createPatient(requestDto);
     }
+
+    @GetMapping
+    public List<PatientResponseDto> getAllPatients(){
+
+     return  patientService.getAllPatients();
+    }
+
+    @GetMapping("/{id}")
+   public PatientResponseDto getPatientById(@PathVariable Long id){
+
+    return patientService.getPatientById(id);
+   }
+
+
+
 }
 
 

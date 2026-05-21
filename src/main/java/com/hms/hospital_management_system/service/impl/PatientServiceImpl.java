@@ -9,7 +9,9 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -60,12 +62,59 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public List<PatientResponseDto> getAllPatients() {
-        return List.of();
+
+        List<Patient> patients = patientRepository.findAll();
+
+
+        List<PatientResponseDto> list = patients.stream()
+                .map(patient -> {
+                    PatientResponseDto responseDto = new PatientResponseDto();
+                    responseDto.setId(patient.getId());
+                    responseDto.setPatientCode(patient.getPatientCode());
+                    responseDto.setFirstName(patient.getFirstName());
+                    responseDto.setLastName(patient.getLastName());
+                    responseDto.setGender(patient.getGender());
+                    responseDto.setDateOfBirth(patient.getDateOfBirth());
+                    responseDto.setMobileNumber(patient.getMobileNumber());
+                    responseDto.setEmail(patient.getEmail());
+                    responseDto.setAddress(patient.getAddress());
+                    responseDto.setBloodGroup(patient.getBloodGroup());
+                    responseDto.setDisease(patient.getDisease());
+                    responseDto.setAllergies(patient.getAllergies());
+                    responseDto.setCreatedAt(patient.getCreatedAt());
+
+                    return responseDto;
+                }).toList();
+
+
+        return list;
     }
 
     @Override
     public PatientResponseDto getPatientById(Long id) {
-        return null;
+        Patient patient = patientRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Patient Not Found"));
+
+
+        PatientResponseDto responseDto = new PatientResponseDto();
+
+        responseDto.setId(patient.getId());
+        responseDto.setPatientCode(patient.getPatientCode());
+        responseDto.setFirstName(patient.getFirstName());
+        responseDto.setLastName(patient.getLastName());
+        responseDto.setGender(patient.getGender());
+        responseDto.setDateOfBirth(patient.getDateOfBirth());
+        responseDto.setMobileNumber(patient.getMobileNumber());
+        responseDto.setEmail(patient.getEmail());
+        responseDto.setAddress(patient.getAddress());
+        responseDto.setBloodGroup(patient.getBloodGroup());
+        responseDto.setDisease(patient.getDisease());
+        responseDto.setAllergies(patient.getAllergies());
+        responseDto.setCreatedAt(patient.getCreatedAt());
+
+        return responseDto;
+
+
     }
 
     @Override
