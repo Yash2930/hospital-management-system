@@ -119,11 +119,46 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public PatientResponseDto updatePatient(Long id, PatientRequestDto requestDto) {
-        return null;
+
+
+        Patient existingPatient = patientRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Patient Not Found"));
+
+        existingPatient.setFirstName(requestDto.getFirstName());
+        existingPatient.setLastName(requestDto.getLastName());
+        existingPatient.setGender(requestDto.getGender());
+        existingPatient.setDateOfBirth(requestDto.getDateOfBirth());
+        existingPatient.setMobileNumber(requestDto.getMobileNumber());
+        existingPatient.setEmail(requestDto.getEmail());
+        existingPatient.setAddress(requestDto.getAddress());
+        existingPatient.setBloodGroup(requestDto.getBloodGroup());
+        existingPatient.setDisease(requestDto.getDisease());
+        existingPatient.setAllergies(requestDto.getAllergies());
+
+
+        Patient updatedPatient = patientRepository.save(existingPatient);
+
+        PatientResponseDto responseDto = new PatientResponseDto();
+
+        responseDto.setId(updatedPatient.getId());
+        responseDto.setPatientCode(updatedPatient.getPatientCode());
+        responseDto.setFirstName(updatedPatient.getFirstName());
+        responseDto.setLastName(updatedPatient.getLastName());
+        responseDto.setGender(updatedPatient.getGender());
+        responseDto.setDateOfBirth(updatedPatient.getDateOfBirth());
+        responseDto.setMobileNumber(updatedPatient.getMobileNumber());
+        responseDto.setEmail(updatedPatient.getEmail());
+        responseDto.setAddress(updatedPatient.getAddress());
+        responseDto.setBloodGroup(updatedPatient.getBloodGroup());
+        responseDto.setDisease(updatedPatient.getDisease());
+        responseDto.setAllergies(updatedPatient.getAllergies());
+        responseDto.setCreatedAt(updatedPatient.getCreatedAt());
+
+        return responseDto;
     }
 
     @Override
     public void deletePatient(Long id) {
-
+     patientRepository.deleteById(id);
     }
 }

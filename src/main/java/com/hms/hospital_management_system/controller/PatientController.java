@@ -5,7 +5,6 @@ import com.hms.hospital_management_system.dto.PatientResponseDto;
 import com.hms.hospital_management_system.service.PatientService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,7 +34,18 @@ public class PatientController {
     return patientService.getPatientById(id);
    }
 
+   @PutMapping("/{id}")
+   public PatientResponseDto updatePatient(@PathVariable Long id, @
+                          Valid @RequestBody PatientRequestDto patientRequestDto){
 
+        return patientService.updatePatient(id,patientRequestDto);
+   }
+
+   @DeleteMapping("/{id}")
+   public String pateintDeleteById(@PathVariable Long id){
+     patientService.deletePatient(id);
+        return "Data Deleted";
+   }
 
 }
 
