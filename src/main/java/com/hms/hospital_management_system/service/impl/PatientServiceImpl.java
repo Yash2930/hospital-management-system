@@ -3,6 +3,7 @@ package com.hms.hospital_management_system.service.impl;
 import com.hms.hospital_management_system.dto.PatientRequestDto;
 import com.hms.hospital_management_system.dto.PatientResponseDto;
 import com.hms.hospital_management_system.entity.Patient;
+import com.hms.hospital_management_system.exception.ResourceNotFoundException;
 import com.hms.hospital_management_system.repository.PatientRepository;
 import com.hms.hospital_management_system.service.PatientService;
 import lombok.RequiredArgsConstructor;
@@ -93,7 +94,7 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public PatientResponseDto getPatientById(Long id) {
         Patient patient = patientRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Patient Not Found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Patient Not Found"));
 
 
         PatientResponseDto responseDto = new PatientResponseDto();
@@ -122,7 +123,7 @@ public class PatientServiceImpl implements PatientService {
 
 
         Patient existingPatient = patientRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Patient Not Found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Patient Not Found"));
 
         existingPatient.setFirstName(requestDto.getFirstName());
         existingPatient.setLastName(requestDto.getLastName());
