@@ -1,5 +1,6 @@
 package com.hms.hospital_management_system.service;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import com.hms.hospital_management_system.dto.PatientRequestDto;
 import com.hms.hospital_management_system.dto.PatientResponseDto;
@@ -10,7 +11,7 @@ public interface PatientService {
 
     PatientResponseDto createPatient(PatientRequestDto requestDto);
 
-    List<PatientResponseDto> getAllPatients();
+    Page<PatientResponseDto> getAllPatients(Pageable pageable);
 
     PatientResponseDto getPatientById(Long id);
 

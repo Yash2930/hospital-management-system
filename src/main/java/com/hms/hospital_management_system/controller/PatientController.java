@@ -6,6 +6,9 @@ import com.hms.hospital_management_system.service.PatientService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 
@@ -23,9 +26,14 @@ public class PatientController {
     }
 
     @GetMapping
-    public List<PatientResponseDto> getAllPatients(){
+    public Page<PatientResponseDto> getAllPatients(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size
+    ) {
 
-     return  patientService.getAllPatients();
+        Pageable pageable = PageRequest.of(page, size);
+
+        return patientService.getAllPatients(pageable);
     }
 
     @GetMapping("/{id}")

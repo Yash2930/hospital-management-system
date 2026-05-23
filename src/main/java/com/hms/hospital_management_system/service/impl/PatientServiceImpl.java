@@ -7,9 +7,10 @@ import com.hms.hospital_management_system.exception.ResourceNotFoundException;
 import com.hms.hospital_management_system.repository.PatientRepository;
 import com.hms.hospital_management_system.service.PatientService;
 import lombok.RequiredArgsConstructor;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
+import lombok.Builder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -62,33 +63,25 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public List<PatientResponseDto> getAllPatients() {
+    public Page<PatientResponseDto> getAllPatients(Pageable pageable) {
 
-        List<Patient> patients = patientRepository.findAll();
+        Page<Patient> patients = patientRepository.findAll(pageable);
 
-
-        List<PatientResponseDto> list = patients.stream()
-                .map(patient -> {
-                    PatientResponseDto responseDto = new PatientResponseDto();
-                    responseDto.setId(patient.getId());
-                    responseDto.setPatientCode(patient.getPatientCode());
-                    responseDto.setFirstName(patient.getFirstName());
-                    responseDto.setLastName(patient.getLastName());
-                    responseDto.setGender(patient.getGender());
-                    responseDto.setDateOfBirth(patient.getDateOfBirth());
-                    responseDto.setMobileNumber(patient.getMobileNumber());
-                    responseDto.setEmail(patient.getEmail());
-                    responseDto.setAddress(patient.getAddress());
-                    responseDto.setBloodGroup(patient.getBloodGroup());
-                    responseDto.setDisease(patient.getDisease());
-                    responseDto.setAllergies(patient.getAllergies());
-                    responseDto.setCreatedAt(patient.getCreatedAt());
-
-                    return responseDto;
-                }).toList();
-
-
-        return list;
+        return patients.map(patient -> PatientResponseDto.builder()
+                .id(patient.getId())
+                .patientCode(patient.getPatientCode())
+                .firstName(patient.getFirstName())
+                .lastName(patient.getLastName())
+                .gender(patient.getGender())
+                .dateOfBirth(patient.getDateOfBirth())
+                .mobileNumber(patient.getMobileNumber())
+                .email(patient.getEmail())
+                .address(patient.getAddress())
+                .bloodGroup(patient.getBloodGroup())
+                .disease(patient.getDisease())
+                .allergies(patient.getAllergies())
+                .createdAt(patient.getCreatedAt())
+                .build());
     }
 
     @Override
