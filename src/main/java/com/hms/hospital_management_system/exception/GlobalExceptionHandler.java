@@ -28,6 +28,22 @@ public class GlobalExceptionHandler {
     }
 
 
+
+    @ExceptionHandler(InvalidSortFieldException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidSortFieldException(InvalidSortFieldException ex)
+    {
+
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .message(ex.getMessage())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .timestamp(LocalDateTime.now())
+                .build();
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String,String>> handleValidationExceptions(MethodArgumentNotValidException ex){
 
