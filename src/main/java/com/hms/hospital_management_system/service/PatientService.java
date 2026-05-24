@@ -19,4 +19,6 @@ public interface PatientService {
 
     void deletePatient(Long id);
 
+    List<PatientResponseDto> searchPatients(String keyword);
+
 }

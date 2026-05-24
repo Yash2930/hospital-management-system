@@ -155,4 +155,37 @@ public class PatientServiceImpl implements PatientService {
     public void deletePatient(Long id) {
      patientRepository.deleteById(id);
     }
+
+
+
+
+    @Override
+    public List<PatientResponseDto> searchPatients(String keyword) {
+
+        List<Patient> patients =
+                patientRepository
+                        .findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseOrDiseaseContainingIgnoreCase(
+                                keyword,
+                                keyword,
+                                keyword
+                        );
+
+        return patients.stream()
+                .map(patient -> PatientResponseDto.builder()
+                        .id(patient.getId())
+                        .patientCode(patient.getPatientCode())
+                        .firstName(patient.getFirstName())
+                        .lastName(patient.getLastName())
+                        .gender(patient.getGender())
+                        .dateOfBirth(patient.getDateOfBirth())
+                        .mobileNumber(patient.getMobileNumber())
+                        .email(patient.getEmail())
+                        .address(patient.getAddress())
+                        .bloodGroup(patient.getBloodGroup())
+                        .disease(patient.getDisease())
+                        .allergies(patient.getAllergies())
+                        .createdAt(patient.getCreatedAt())
+                        .build())
+                .toList();
+    }
 }

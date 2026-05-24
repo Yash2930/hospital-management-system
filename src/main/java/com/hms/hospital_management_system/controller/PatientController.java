@@ -61,6 +61,15 @@ public class PatientController {
         return "Data Deleted";
    }
 
+
+    @GetMapping("/search")
+    public List<PatientResponseDto> searchPatients(
+            @RequestParam String keyword
+    ) {
+
+        return patientService.searchPatients(keyword);
+    }
+
 }
 
 
