@@ -1,7 +1,9 @@
 package com.hms.hospital_management_system.service.impl;
 
+import com.hms.hospital_management_system.dto.auth.LoginRequest;
 import com.hms.hospital_management_system.dto.auth.RegisterRequest;
 import com.hms.hospital_management_system.entity.User;
+import com.hms.hospital_management_system.exception.InvalidCredentialsException;
 import com.hms.hospital_management_system.repository.UserRepository;
 import com.hms.hospital_management_system.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,21 @@ public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
+
+    @Override
+    public String login(LoginRequest request) {
+
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(()->new InvalidCredentialsException("Invalid email or password"));
+
+        boolean isPasswordMatch = passwordEncoder.matches(request.getPassword(), user.getPassword());
+
+        if (!isPasswordMatch) {
+            throw new InvalidCredentialsException("Invalid email or password");
+        }
+
+        return "Login successful";
+    }
 
     @Override
     public String register(RegisterRequest request) {
