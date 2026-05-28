@@ -1,6 +1,7 @@
 package com.hms.hospital_management_system.controller;
 
 import com.hms.hospital_management_system.dto.auth.LoginRequest;
+import com.hms.hospital_management_system.dto.auth.LoginResponse;
 import com.hms.hospital_management_system.dto.auth.RegisterRequest;
 import com.hms.hospital_management_system.service.AuthService;
 import jakarta.validation.Valid;
@@ -26,7 +27,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String login(
+    public LoginResponse login(
             @Valid @RequestBody LoginRequest request
     ) {
 

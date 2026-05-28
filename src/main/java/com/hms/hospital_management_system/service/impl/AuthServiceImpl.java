@@ -1,10 +1,12 @@
 package com.hms.hospital_management_system.service.impl;
 
 import com.hms.hospital_management_system.dto.auth.LoginRequest;
+import com.hms.hospital_management_system.dto.auth.LoginResponse;
 import com.hms.hospital_management_system.dto.auth.RegisterRequest;
 import com.hms.hospital_management_system.entity.User;
 import com.hms.hospital_management_system.exception.InvalidCredentialsException;
 import com.hms.hospital_management_system.repository.UserRepository;
+import com.hms.hospital_management_system.security.JwtService;
 import com.hms.hospital_management_system.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,8 +22,10 @@ public class AuthServiceImpl implements AuthService {
 
     private final PasswordEncoder passwordEncoder;
 
+    private final JwtService jwtService;
+
     @Override
-    public String login(LoginRequest request) {
+    public LoginResponse login(LoginRequest request) {
 
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(()->new InvalidCredentialsException("Invalid email or password"));
@@ -32,7 +36,9 @@ public class AuthServiceImpl implements AuthService {
             throw new InvalidCredentialsException("Invalid email or password");
         }
 
-        return "Login successful";
+        String token = jwtService.generateToken(user.getEmail());
+
+        return new LoginResponse(token);
     }
 
     @Override
