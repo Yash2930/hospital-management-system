@@ -22,11 +22,12 @@ public class JwtService {
         );
     }
 
-    public String generateToken(String email) {
+    public String generateToken(String email, String role) {
 
         return Jwts.builder()
-
                 .subject(email)
+
+                .claim("role", role)
 
                 .issuedAt(new Date())
 
@@ -35,11 +36,7 @@ public class JwtService {
                                 + 1000 * 60 * 60)
                 )
 
-                .signWith(
-                        getSignInKey(),
-                        SignatureAlgorithm.HS256
-                )
-
+                .signWith(getSignInKey())
                 .compact();
     }
 
