@@ -72,4 +72,15 @@ public class JwtService {
 
         return expiration.before(new Date());
     }
+
+
+    public String extractRole(String token) {
+
+        return Jwts.parser()
+                .verifyWith(getSignInKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .get("role", String.class);
+    }
 }
