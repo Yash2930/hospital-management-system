@@ -31,6 +31,7 @@ public class PatientController {
 
     @Operation(summary = "Create a new patient")
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN','DOCTOR')")
     public PatientResponseDto createPatient(@Valid @RequestBody PatientRequestDto requestDto) {
 
         return patientService.createPatient(requestDto);
@@ -38,6 +39,7 @@ public class PatientController {
 
     @Operation(summary = "Get all patients with pagination and sorting")
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN','DOCTOR','RECEPTIONIST')")
     public Page<PatientResponseDto> getAllPatients(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
@@ -68,6 +70,7 @@ public class PatientController {
 
     @Operation(summary = "Get patient by ID")
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','DOCTOR','RECEPTIONIST')")
    public PatientResponseDto getPatientById(@PathVariable Long id){
 
     return patientService.getPatientById(id);
@@ -75,6 +78,7 @@ public class PatientController {
 
    @Operation(summary = "Update patient details")
    @PutMapping("/{id}")
+   @PreAuthorize("hasAnyRole('ADMIN','DOCTOR')")
    public PatientResponseDto updatePatient(@PathVariable Long id, @
                           Valid @RequestBody PatientRequestDto patientRequestDto){
 
