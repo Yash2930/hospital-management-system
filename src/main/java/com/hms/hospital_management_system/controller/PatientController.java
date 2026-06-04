@@ -16,6 +16,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
 
 import java.util.List;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 @RestController
 @RequestMapping("/api/patients")
@@ -82,6 +83,7 @@ public class PatientController {
 
    @Operation(summary = "Delete patient")
    @DeleteMapping("/{id}")
+   @PreAuthorize("hasRole('ADMIN')")
    public String pateintDeleteById(@PathVariable Long id){
      patientService.deletePatient(id);
         return "Data Deleted";
