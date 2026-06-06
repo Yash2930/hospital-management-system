@@ -1,0 +1,88 @@
+package com.hms.hospital_management_system.service.impl;
+
+import com.hms.hospital_management_system.dto.AppointmentRequestDto;
+import com.hms.hospital_management_system.dto.AppointmentResponseDto;
+import com.hms.hospital_management_system.entity.Appointment;
+import com.hms.hospital_management_system.repository.AppointmentRepository;
+import com.hms.hospital_management_system.service.AppointmentService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import com.hms.hospital_management_system.enums.AppointmentStatus;
+
+@Service
+@RequiredArgsConstructor
+public class AppointmentServiceImpl implements AppointmentService {
+
+
+    private final AppointmentRepository appointmentRepository;
+
+
+
+    @Override
+    public AppointmentResponseDto createAppointment(AppointmentRequestDto requestDto) {
+
+        Appointment appointment = new Appointment();
+
+        appointment.setAppointmentCode("APT" + System.currentTimeMillis());
+
+        appointment.setPatientId(requestDto.getPatientId());
+
+        appointment.setDoctorName(requestDto.getDoctorName());
+
+        appointment.setAppointmentDate(requestDto.getAppointmentDate());
+
+        appointment.setAppointmentTime(requestDto.getAppointmentTime());
+
+        appointment.setRemarks(requestDto.getRemarks());
+
+        appointment.setStatus(AppointmentStatus.SCHEDULED);
+
+
+        Appointment savedAppointment = appointmentRepository.save(appointment);
+
+
+
+        return mapToResponseDto(savedAppointment);
+    }
+
+
+    // 👇 Mapper method goes here
+    private AppointmentResponseDto mapToResponseDto(
+            Appointment appointment) {
+
+        AppointmentResponseDto dto =
+                new AppointmentResponseDto();
+
+        dto.setId(appointment.getId());
+        dto.setAppointmentCode(
+                appointment.getAppointmentCode()
+        );
+        dto.setPatientId(
+                appointment.getPatientId()
+        );
+        dto.setDoctorName(
+                appointment.getDoctorName()
+        );
+        dto.setAppointmentDate(
+                appointment.getAppointmentDate()
+        );
+        dto.setAppointmentTime(
+                appointment.getAppointmentTime()
+        );
+        dto.setStatus(
+                appointment.getStatus()
+        );
+        dto.setRemarks(
+                appointment.getRemarks()
+        );
+        dto.setCreatedAt(
+                appointment.getCreatedAt()
+        );
+        dto.setUpdatedAt(
+                appointment.getUpdatedAt()
+        );
+
+        return dto;
+    }
+}

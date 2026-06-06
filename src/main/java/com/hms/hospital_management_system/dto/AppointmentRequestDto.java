@@ -11,7 +11,7 @@ import java.time.LocalTime;
 @Data
 public class AppointmentRequestDto {
 
-    private String patientId;
+    private Long patientId;
 
     private String doctorName;
 

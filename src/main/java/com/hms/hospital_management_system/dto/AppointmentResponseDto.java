@@ -17,7 +17,7 @@ public class AppointmentResponseDto {
 
     private String appointmentCode;
 
-    private String patientId;
+    private Long patientId;
 
     private String doctorName;
 

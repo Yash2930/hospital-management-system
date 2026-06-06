@@ -6,6 +6,7 @@ import com.hms.hospital_management_system.dto.auth.RegisterRequest;
 import com.hms.hospital_management_system.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,10 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/auth")
-@RequiredArgsConstructor
 public class AuthController {
 
+
     private final AuthService authService;
+
+    AuthController(AuthService authService){
+        this.authService=authService;
+    }
 
     @PostMapping("/register")
     public String register(
