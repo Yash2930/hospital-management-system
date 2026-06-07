@@ -34,4 +34,28 @@ public class AppointmentController {
           return new ResponseEntity<>(appointmentService.getAllAppointments(),HttpStatus.OK) ;
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<AppointmentResponseDto> getAppointmentById(@PathVariable Long id){
+
+       return ResponseEntity.ok(appointmentService.getAppointmentById(id));
+    }
+
+    @PutMapping("/{id}")
+    public  ResponseEntity<AppointmentResponseDto> updateAppointment(@PathVariable Long id,
+                                              @Valid @RequestBody AppointmentRequestDto requestDto){
+
+        return ResponseEntity.ok(appointmentService.updateAppointment(id,requestDto));
+    }
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteAppointment(@PathVariable Long id){
+
+
+        appointmentService.deleteAppointment(id);
+
+        return  ResponseEntity.ok("Appointment deleted successfully");
+    }
+
+
 }

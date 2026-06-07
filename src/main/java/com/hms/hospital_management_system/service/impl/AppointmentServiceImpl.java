@@ -3,6 +3,7 @@ package com.hms.hospital_management_system.service.impl;
 import com.hms.hospital_management_system.dto.AppointmentRequestDto;
 import com.hms.hospital_management_system.dto.AppointmentResponseDto;
 import com.hms.hospital_management_system.entity.Appointment;
+import com.hms.hospital_management_system.exception.ResourceNotFoundException;
 import com.hms.hospital_management_system.repository.AppointmentRepository;
 import com.hms.hospital_management_system.service.AppointmentService;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,45 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     private final AppointmentRepository appointmentRepository;
 
+
+    @Override
+    public void deleteAppointment(Long id) {
+
+        Appointment appointment = appointmentRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Appointment not found with id : " + id
+                        ));
+
+        appointmentRepository.delete(appointment);
+    }
+
+    @Override
+    public AppointmentResponseDto updateAppointment(Long id, AppointmentRequestDto requestDto) {
+
+        Appointment appointment = appointmentRepository.findById(id).
+                orElseThrow(() -> new ResourceNotFoundException("Appointment not found with id : " + id));
+
+          appointment.setPatientId(requestDto.getPatientId());
+          appointment.setDoctorName(requestDto.getDoctorName());
+          appointment.setAppointmentDate(requestDto.getAppointmentDate());
+          appointment.setAppointmentTime(requestDto.getAppointmentTime());
+          appointment.setRemarks(requestDto.getRemarks());
+
+
+        Appointment savedAppointment = appointmentRepository.save(appointment);
+
+      return  mapToResponseDto(savedAppointment);
+
+    }
+
+    @Override
+    public AppointmentResponseDto getAppointmentById(Long id) {
+
+        Appointment appointment = appointmentRepository.findById(id).
+                orElseThrow(() -> new ResourceNotFoundException("Appointment not found with id : " + id));
+        return  mapToResponseDto(appointment);
+    }
 
     @Override
     public List<AppointmentResponseDto> getAllAppointments() {
