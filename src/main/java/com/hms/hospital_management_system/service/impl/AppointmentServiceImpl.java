@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.hms.hospital_management_system.enums.AppointmentStatus;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class AppointmentServiceImpl implements AppointmentService {
@@ -18,6 +20,16 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final AppointmentRepository appointmentRepository;
 
 
+    @Override
+    public List<AppointmentResponseDto> getAllAppointments() {
+
+        List<Appointment> appointments = appointmentRepository.findAll();
+
+       return appointments.stream().map(this::mapToResponseDto).toList();
+
+
+
+    }
 
     @Override
     public AppointmentResponseDto createAppointment(AppointmentRequestDto requestDto) {

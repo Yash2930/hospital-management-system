@@ -3,13 +3,13 @@ package com.hms.hospital_management_system.controller;
 import com.hms.hospital_management_system.dto.AppointmentRequestDto;
 import com.hms.hospital_management_system.dto.AppointmentResponseDto;
 import com.hms.hospital_management_system.service.AppointmentService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/appointments")
@@ -20,10 +20,18 @@ public class AppointmentController {
 
 
     @PostMapping
-    public ResponseEntity<AppointmentResponseDto> createAppointment( @RequestBody AppointmentRequestDto requestDto){
+    public ResponseEntity<AppointmentResponseDto> createAppointment( @Valid @RequestBody AppointmentRequestDto requestDto){
 
         AppointmentResponseDto appointment = appointmentService.createAppointment(requestDto);
 
      return new ResponseEntity<>(appointment, HttpStatus.CREATED);
     }
+
+
+    @GetMapping
+    public ResponseEntity<List<AppointmentResponseDto>>  getAllAppointments(){
+
+          return new ResponseEntity<>(appointmentService.getAllAppointments(),HttpStatus.OK) ;
+    }
+
 }
