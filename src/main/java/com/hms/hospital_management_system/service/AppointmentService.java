@@ -16,4 +16,10 @@ public interface AppointmentService {
     AppointmentResponseDto updateAppointment(Long id,AppointmentRequestDto requestDto);
 
     void deleteAppointment(Long id);
+
+
+    AppointmentResponseDto completeAppointment(Long id);
+
+    AppointmentResponseDto cancelAppointment(Long id);
+
 }

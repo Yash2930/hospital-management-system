@@ -58,4 +58,17 @@ public class AppointmentController {
     }
 
 
+    @PutMapping("/{id}/complete")
+   public ResponseEntity<AppointmentResponseDto> completeAppointment(@PathVariable Long id){
+
+       AppointmentResponseDto appointmentResponseDto = appointmentService.completeAppointment(id);
+       return  ResponseEntity.ok(appointmentResponseDto);
+   }
+
+    @PutMapping("/{id}/cancel")
+    public  ResponseEntity<AppointmentResponseDto> cancelAppointment(@PathVariable Long id){
+        return ResponseEntity.ok(appointmentService.cancelAppointment(id));
+    }
+
+
 }

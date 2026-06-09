@@ -22,6 +22,43 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 
     @Override
+    public AppointmentResponseDto completeAppointment(Long id) {
+
+        Appointment appointment = appointmentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Appointment not found with id : " + id));
+
+        if(appointment.getStatus()!=AppointmentStatus.SCHEDULED){
+            throw new RuntimeException(
+                    "Only scheduled appointments can be completed"
+            );
+        }
+
+         appointment.setStatus(AppointmentStatus.COMPLETED);
+
+        Appointment updatedAppointment = appointmentRepository.save(appointment);
+
+        return mapToResponseDto(updatedAppointment);
+    }
+
+    @Override
+    public AppointmentResponseDto cancelAppointment(Long id) {
+        Appointment appointment = appointmentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Appointment not found with id : " + id));
+
+        if(appointment.getStatus()!=AppointmentStatus.SCHEDULED){
+            throw new RuntimeException(
+                    "Only scheduled appointments can be cancelled"
+            );
+        }
+
+        appointment.setStatus(AppointmentStatus.CANCELLED);
+
+        Appointment updatedAppointment = appointmentRepository.save(appointment);
+
+        return mapToResponseDto(updatedAppointment);
+    }
+
+    @Override
     public void deleteAppointment(Long id) {
 
         Appointment appointment = appointmentRepository.findById(id)
