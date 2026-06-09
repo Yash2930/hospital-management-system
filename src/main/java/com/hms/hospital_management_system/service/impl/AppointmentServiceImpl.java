@@ -3,6 +3,7 @@ package com.hms.hospital_management_system.service.impl;
 import com.hms.hospital_management_system.dto.AppointmentRequestDto;
 import com.hms.hospital_management_system.dto.AppointmentResponseDto;
 import com.hms.hospital_management_system.entity.Appointment;
+import com.hms.hospital_management_system.exception.InvalidAppointmentStatusException;
 import com.hms.hospital_management_system.exception.ResourceNotFoundException;
 import com.hms.hospital_management_system.repository.AppointmentRepository;
 import com.hms.hospital_management_system.service.AppointmentService;
@@ -28,7 +29,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                 .orElseThrow(() -> new ResourceNotFoundException("Appointment not found with id : " + id));
 
         if(appointment.getStatus()!=AppointmentStatus.SCHEDULED){
-            throw new RuntimeException(
+            throw new InvalidAppointmentStatusException(
                     "Only scheduled appointments can be completed"
             );
         }
@@ -46,7 +47,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                 .orElseThrow(() -> new ResourceNotFoundException("Appointment not found with id : " + id));
 
         if(appointment.getStatus()!=AppointmentStatus.SCHEDULED){
-            throw new RuntimeException(
+            throw new InvalidAppointmentStatusException(
                     "Only scheduled appointments can be cancelled"
             );
         }
