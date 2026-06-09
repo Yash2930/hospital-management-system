@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public class AppointmentController {
 
     private final AppointmentService appointmentService;
 
-
+    @PreAuthorize("hasAnyRole('ADMIN','DOCTOR')")
     @PostMapping
     public ResponseEntity<AppointmentResponseDto> createAppointment( @Valid @RequestBody AppointmentRequestDto requestDto){
 
@@ -27,19 +28,21 @@ public class AppointmentController {
      return new ResponseEntity<>(appointment, HttpStatus.CREATED);
     }
 
-
+    @PreAuthorize("hasAnyRole('ADMIN','DOCTOR')")
     @GetMapping
     public ResponseEntity<List<AppointmentResponseDto>>  getAllAppointments(){
 
           return new ResponseEntity<>(appointmentService.getAllAppointments(),HttpStatus.OK) ;
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','DOCTOR')")
     @GetMapping("/{id}")
     public ResponseEntity<AppointmentResponseDto> getAppointmentById(@PathVariable Long id){
 
        return ResponseEntity.ok(appointmentService.getAppointmentById(id));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','DOCTOR')")
     @PutMapping("/{id}")
     public  ResponseEntity<AppointmentResponseDto> updateAppointment(@PathVariable Long id,
                                               @Valid @RequestBody AppointmentRequestDto requestDto){
@@ -48,6 +51,7 @@ public class AppointmentController {
     }
 
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteAppointment(@PathVariable Long id){
 
@@ -57,7 +61,7 @@ public class AppointmentController {
         return  ResponseEntity.ok("Appointment deleted successfully");
     }
 
-
+    @PreAuthorize("hasAnyRole('ADMIN','DOCTOR')")
     @PutMapping("/{id}/complete")
    public ResponseEntity<AppointmentResponseDto> completeAppointment(@PathVariable Long id){
 
@@ -65,6 +69,7 @@ public class AppointmentController {
        return  ResponseEntity.ok(appointmentResponseDto);
    }
 
+    @PreAuthorize("hasAnyRole('ADMIN','DOCTOR')")
     @PutMapping("/{id}/cancel")
     public  ResponseEntity<AppointmentResponseDto> cancelAppointment(@PathVariable Long id){
         return ResponseEntity.ok(appointmentService.cancelAppointment(id));
