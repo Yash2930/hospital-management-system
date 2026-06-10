@@ -10,4 +10,6 @@ import java.util.List;
 public interface DoctorRepository extends JpaRepository<Doctor,Long> {
 
     List<Doctor> findBySpecialization(String specialization);
+
+    boolean existsByEmail(String email);
 }

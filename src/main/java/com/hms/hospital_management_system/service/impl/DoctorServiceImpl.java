@@ -6,9 +6,11 @@ import com.hms.hospital_management_system.entity.Doctor;
 import com.hms.hospital_management_system.repository.DoctorRepository;
 import com.hms.hospital_management_system.service.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class DoctorServiceImpl implements DoctorService {
 
     @Autowired
@@ -17,9 +19,30 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public DoctorResponseDto createDoctor(DoctorRequestDto requestDto) {
 
+        if (doctorRepository.existsByEmail(
+                requestDto.getEmail())) {
+
+            throw new RuntimeException(
+                    "Doctor email already exists"
+            );
+        }
+
+      Doctor doctor=new Doctor();
+        doctor.setDoctorCode(
+                "DOC" + System.currentTimeMillis()
+        );
+
+        doctor.setFullName(requestDto.getFullName());
+        doctor.setEmail(requestDto.getEmail());
+        doctor.setPhoneNumber(requestDto.getPhoneNumber());
+        doctor.setSpecialization(requestDto.getSpecialization());
+        doctor.setExperienceYears(requestDto.getExperienceYears());
 
 
-        return null;
+
+        Doctor savedDoctor = doctorRepository.save(doctor);
+
+        return mapToResponseDto(savedDoctor) ;
     }
 
     @Override
