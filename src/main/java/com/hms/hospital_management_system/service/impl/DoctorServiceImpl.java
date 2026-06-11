@@ -3,6 +3,7 @@ package com.hms.hospital_management_system.service.impl;
 import com.hms.hospital_management_system.dto.DoctorRequestDto;
 import com.hms.hospital_management_system.dto.DoctorResponseDto;
 import com.hms.hospital_management_system.entity.Doctor;
+import com.hms.hospital_management_system.exception.DuplicateEmailException;
 import com.hms.hospital_management_system.exception.ResourceNotFoundException;
 import com.hms.hospital_management_system.repository.DoctorRepository;
 import com.hms.hospital_management_system.service.DoctorService;
@@ -24,7 +25,7 @@ public class DoctorServiceImpl implements DoctorService {
         if (doctorRepository.existsByEmail(
                 requestDto.getEmail())) {
 
-            throw new RuntimeException(
+            throw new DuplicateEmailException(
                     "Doctor email already exists"
             );
         }
