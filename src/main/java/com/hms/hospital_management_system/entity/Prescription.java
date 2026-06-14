@@ -22,7 +22,7 @@ public class Prescription {
     private String prescriptionCode;
     private String diagnosis;
     private String medicines;
-    private  String Dosage;
+    private  String dosage;
     private String instructions;
 
     @ManyToOne

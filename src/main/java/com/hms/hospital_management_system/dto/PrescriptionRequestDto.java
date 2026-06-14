@@ -14,7 +14,7 @@ public class PrescriptionRequestDto {
     @NotBlank(message = "medicines are Required")
     private String medicines;
     @NotBlank(message = "Dosage is Required")
-    private  String Dosage;
+    private  String dosage;
     @NotBlank(message = "instructions are Required")
     private String instructions;
 

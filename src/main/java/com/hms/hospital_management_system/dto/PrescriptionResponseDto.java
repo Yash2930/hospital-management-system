@@ -2,6 +2,7 @@ package com.hms.hospital_management_system.dto;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -23,7 +24,7 @@ public class PrescriptionResponseDto {
 
     private String medicines;
 
-    private  String Dosage;
+    private  String dosage;
 
     private String instructions;
 
