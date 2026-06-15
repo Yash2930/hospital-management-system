@@ -33,6 +33,9 @@ public class Prescription {
     @JoinColumn(name = "doctor_id")
     private Doctor doctor;
 
+    @ManyToOne
+    @JoinColumn(name = "appointment_id")
+    private Appointment appointment;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

@@ -24,6 +24,10 @@ public class PrescriptionResponseDto {
 
     private String doctorName;
 
+    private Long appointmentId;
+
+    private String appointmentCode;
+
     private String diagnosis;
 
     private String medicines;

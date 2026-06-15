@@ -28,4 +28,7 @@ public class PrescriptionRequestDto {
     @NotNull(message = "Doctor Id is required")
     private Long doctorId;
 
+    @NotNull(message = "Appointment Id is required")
+    private  Long appointmentId;
+
 }

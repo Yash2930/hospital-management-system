@@ -2,10 +2,12 @@ package com.hms.hospital_management_system.service.impl;
 
 import com.hms.hospital_management_system.dto.PrescriptionRequestDto;
 import com.hms.hospital_management_system.dto.PrescriptionResponseDto;
+import com.hms.hospital_management_system.entity.Appointment;
 import com.hms.hospital_management_system.entity.Doctor;
 import com.hms.hospital_management_system.entity.Patient;
 import com.hms.hospital_management_system.entity.Prescription;
 import com.hms.hospital_management_system.exception.ResourceNotFoundException;
+import com.hms.hospital_management_system.repository.AppointmentRepository;
 import com.hms.hospital_management_system.repository.DoctorRepository;
 import com.hms.hospital_management_system.repository.PatientRepository;
 import com.hms.hospital_management_system.repository.PrescriptionRepository;
@@ -24,6 +26,8 @@ public class PrescriptionServiceImpl implements PrescriptionService {
      private final PatientRepository patientRepository;
 
      private final DoctorRepository doctorRepository;
+
+     private final AppointmentRepository appointmentRepository;
 
 
     @Override
@@ -99,6 +103,14 @@ public class PrescriptionServiceImpl implements PrescriptionService {
         Doctor doctor = doctorRepository.findById(requestDto.getDoctorId())
                 .orElseThrow(() -> new ResourceNotFoundException("Doctor not found"));
 
+        Appointment appointment =
+                appointmentRepository
+                        .findById(
+                                requestDto.getAppointmentId())
+                        .orElseThrow(() ->
+                                new ResourceNotFoundException(
+                                        "Appointment not found"));
+
         Prescription prescription =
                 new Prescription();
 
@@ -120,6 +132,8 @@ public class PrescriptionServiceImpl implements PrescriptionService {
         prescription.setPatient(patient);
 
         prescription.setDoctor(doctor);
+
+        prescription.setAppointment(appointment);
 
         Prescription savedPrescription =
                 prescriptionRepository.save(
@@ -144,6 +158,12 @@ public class PrescriptionServiceImpl implements PrescriptionService {
                         prescription.getDoctor().getId())
                 .doctorName(
                         prescription.getDoctor().getFullName())
+                .appointmentId(
+                        prescription.getAppointment().getId())
+
+                .appointmentCode(
+                        prescription.getAppointment()
+                                .getAppointmentCode())
                 .diagnosis(
                         prescription.getDiagnosis())
                 .medicines(
