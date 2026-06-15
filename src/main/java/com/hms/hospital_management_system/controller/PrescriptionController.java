@@ -7,10 +7,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/prescriptions")
@@ -31,5 +30,37 @@ public class PrescriptionController {
                         prescriptionService
                                 .createPrescription(
                                         requestDto));
+    }
+
+
+    @GetMapping
+    public ResponseEntity<List<PrescriptionResponseDto>> getAllPrescription(){
+
+        return ResponseEntity.ok(prescriptionService.getAllPrescription());
+
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PrescriptionResponseDto> getPrescriptionById(@PathVariable Long id){
+
+        return ResponseEntity.ok(prescriptionService.getPrescriptionById(id));
+    }
+
+
+    @PutMapping("/{id}")
+    public ResponseEntity<PrescriptionResponseDto> updatePrescription(
+                  @PathVariable Long id,
+                  @Valid @RequestBody PrescriptionRequestDto requestDto
+                                                  )
+    {
+
+        return  ResponseEntity.ok(prescriptionService.updatePrescription(id,requestDto));
+    }
+
+ @DeleteMapping("/{id}")
+    public ResponseEntity<String> deletePrescription(@PathVariable Long id){
+
+        prescriptionService.deletePrescription(id);
+        return ResponseEntity.ok("Prescription deleted!!!");
     }
 }
