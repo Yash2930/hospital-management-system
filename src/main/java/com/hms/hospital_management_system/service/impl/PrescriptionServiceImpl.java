@@ -2,9 +2,11 @@ package com.hms.hospital_management_system.service.impl;
 
 import com.hms.hospital_management_system.dto.PrescriptionRequestDto;
 import com.hms.hospital_management_system.dto.PrescriptionResponseDto;
+import com.hms.hospital_management_system.entity.Doctor;
 import com.hms.hospital_management_system.entity.Patient;
 import com.hms.hospital_management_system.entity.Prescription;
 import com.hms.hospital_management_system.exception.ResourceNotFoundException;
+import com.hms.hospital_management_system.repository.DoctorRepository;
 import com.hms.hospital_management_system.repository.PatientRepository;
 import com.hms.hospital_management_system.repository.PrescriptionRepository;
 import com.hms.hospital_management_system.service.PrescriptionService;
@@ -19,6 +21,8 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
      private final PatientRepository patientRepository;
 
+     private final DoctorRepository doctorRepository;
+
 
     @Override
     public PrescriptionResponseDto createPrescription(
@@ -29,6 +33,10 @@ public class PrescriptionServiceImpl implements PrescriptionService {
                 .orElseThrow(() ->
                         new ResourceNotFoundException(
                                 "Patient not found"));
+
+
+        Doctor doctor = doctorRepository.findById(requestDto.getDoctorId())
+                .orElseThrow(() -> new ResourceNotFoundException("Doctor not found"));
 
         Prescription prescription =
                 new Prescription();
@@ -50,6 +58,8 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
         prescription.setPatient(patient);
 
+        prescription.setDoctor(doctor);
+
         Prescription savedPrescription =
                 prescriptionRepository.save(
                         prescription);
@@ -69,6 +79,10 @@ public class PrescriptionServiceImpl implements PrescriptionService {
                         prescription.getPatient().getId())
                 .patientName(
                         prescription.getPatient().getFirstName())
+                .doctorId(
+                        prescription.getDoctor().getId())
+                .doctorName(
+                        prescription.getDoctor().getFullName())
                 .diagnosis(
                         prescription.getDiagnosis())
                 .medicines(

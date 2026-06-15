@@ -29,6 +29,11 @@ public class Prescription {
     @JoinColumn(name="patient_id")
     private Patient patient;
 
+    @ManyToOne
+    @JoinColumn(name = "doctor_id")
+    private Doctor doctor;
+
+
     @CreationTimestamp
     private LocalDateTime createdAt;
 

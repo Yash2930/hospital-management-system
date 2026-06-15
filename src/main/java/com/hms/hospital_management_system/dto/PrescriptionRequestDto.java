@@ -2,11 +2,15 @@ package com.hms.hospital_management_system.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class PrescriptionRequestDto {
 
     @NotBlank(message = "Diagnosis is Required")
@@ -20,5 +24,8 @@ public class PrescriptionRequestDto {
 
     @NotNull(message = "Patient Id is required")
     private Long patientId;
+
+    @NotNull(message = "Doctor Id is required")
+    private Long doctorId;
 
 }
