@@ -179,4 +179,31 @@ public class PrescriptionServiceImpl implements PrescriptionService {
                 .build();
     }
 
+    @Override
+    public List<PrescriptionResponseDto> getPrescriptionsByPatientId(Long patientId) {
+
+        return prescriptionRepository.findByPatientId(patientId)
+                .stream()
+                .map(this::mapToResponseDto)
+                .toList();
+    }
+
+
+    @Override
+    public List<PrescriptionResponseDto> getPrescriptionsByDoctorId(Long doctorId) {
+
+        return prescriptionRepository.findByDoctorId(doctorId)
+                .stream()
+                .map(this::mapToResponseDto)
+                .toList();
+    }
+
+
+
+
+
+
+
+
+
 }

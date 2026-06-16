@@ -63,4 +63,28 @@ public class PrescriptionController {
         prescriptionService.deletePrescription(id);
         return ResponseEntity.ok("Prescription deleted!!!");
     }
+
+
+    @GetMapping("/patient/{patientId}")
+    public ResponseEntity<List<PrescriptionResponseDto>>
+    getPrescriptionsByPatientId(
+            @PathVariable Long patientId){
+
+        return ResponseEntity.ok(
+                prescriptionService
+                        .getPrescriptionsByPatientId(
+                                patientId));
+    }
+
+
+    @GetMapping("/doctor/{doctorId}")
+    public ResponseEntity<List<PrescriptionResponseDto>>
+    getPrescriptionsByDoctorId(
+            @PathVariable Long doctorId){
+
+        return ResponseEntity.ok(
+                prescriptionService
+                        .getPrescriptionsByDoctorId(
+                                doctorId));
+    }
 }
