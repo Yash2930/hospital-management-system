@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class PrescriptionController {
     private final PrescriptionService prescriptionService;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN','DOCTOR')")
     public ResponseEntity<PrescriptionResponseDto>
     createPrescription(
             @Valid @RequestBody
@@ -32,7 +34,7 @@ public class PrescriptionController {
                                         requestDto));
     }
 
-
+    @PreAuthorize("hasAnyRole('ADMIN','DOCTOR')")
     @GetMapping
     public ResponseEntity<List<PrescriptionResponseDto>> getAllPrescription(){
 
@@ -40,6 +42,7 @@ public class PrescriptionController {
 
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','DOCTOR')")
     @GetMapping("/{id}")
     public ResponseEntity<PrescriptionResponseDto> getPrescriptionById(@PathVariable Long id){
 
@@ -47,6 +50,7 @@ public class PrescriptionController {
     }
 
 
+    @PreAuthorize("hasAnyRole('ADMIN','DOCTOR')")
     @PutMapping("/{id}")
     public ResponseEntity<PrescriptionResponseDto> updatePrescription(
                   @PathVariable Long id,
@@ -57,7 +61,9 @@ public class PrescriptionController {
         return  ResponseEntity.ok(prescriptionService.updatePrescription(id,requestDto));
     }
 
- @DeleteMapping("/{id}")
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deletePrescription(@PathVariable Long id){
 
         prescriptionService.deletePrescription(id);
@@ -65,6 +71,7 @@ public class PrescriptionController {
     }
 
 
+    @PreAuthorize("hasAnyRole('ADMIN','DOCTOR')")
     @GetMapping("/patient/{patientId}")
     public ResponseEntity<List<PrescriptionResponseDto>>
     getPrescriptionsByPatientId(
@@ -76,7 +83,7 @@ public class PrescriptionController {
                                 patientId));
     }
 
-
+    @PreAuthorize("hasAnyRole('ADMIN','DOCTOR')")
     @GetMapping("/doctor/{doctorId}")
     public ResponseEntity<List<PrescriptionResponseDto>>
     getPrescriptionsByDoctorId(

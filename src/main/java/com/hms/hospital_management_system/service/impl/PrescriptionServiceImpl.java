@@ -30,6 +30,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
      private final AppointmentRepository appointmentRepository;
 
 
+
     @Override
     public List<PrescriptionResponseDto> getAllPrescription() {
 
