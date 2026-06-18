@@ -19,6 +19,12 @@ public class DashboardStatsDto {
 
     private long totalPrescriptions;
 
+    private long todayAppointments;
+
+    private long completedAppointments;
+
+    private long cancelledAppointments;
+
 }
 
 
