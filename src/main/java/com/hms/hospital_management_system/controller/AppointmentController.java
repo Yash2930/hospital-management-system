@@ -3,6 +3,8 @@ package com.hms.hospital_management_system.controller;
 import com.hms.hospital_management_system.dto.AppointmentRequestDto;
 import com.hms.hospital_management_system.dto.AppointmentResponseDto;
 import com.hms.hospital_management_system.service.AppointmentService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -12,12 +14,18 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @RestController
 @RequestMapping("/api/appointments")
 @RequiredArgsConstructor
+@Tag(
+        name = "Appointment Management APIs",
+        description = "APIs for managing appointments"
+)
 public class AppointmentController {
 
     private final AppointmentService appointmentService;
+
 
     @PreAuthorize("hasAnyRole('ADMIN','DOCTOR')")
     @PostMapping
