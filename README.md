@@ -289,6 +289,13 @@ http://localhost:8080/swagger-ui/index.html
 
 ![Swagger UI](images/swagger-home.png)
 
+
+### Dashboard Statistics API
+
+Example response from the dashboard endpoint.
+
+![Dashboard API](images/dashboard-api.png)
+
 ## ▶️ Running the Project
 
 ### Clone Repository
