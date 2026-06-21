@@ -285,6 +285,10 @@ http://localhost:8080/swagger-ui/index.html
 
 ---
 
+### Swagger UI Preview
+
+![Swagger UI](images/swagger-home.png)
+
 ## ▶️ Running the Project
 
 ### Clone Repository
