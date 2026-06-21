@@ -27,6 +27,7 @@ public class AppointmentController {
     private final AppointmentService appointmentService;
 
 
+    @Operation(summary = "Create a new appointment")
     @PreAuthorize("hasAnyRole('ADMIN','DOCTOR')")
     @PostMapping
     public ResponseEntity<AppointmentResponseDto> createAppointment( @Valid @RequestBody AppointmentRequestDto requestDto){
@@ -36,6 +37,7 @@ public class AppointmentController {
      return new ResponseEntity<>(appointment, HttpStatus.CREATED);
     }
 
+    @Operation(summary = "Get all the appointments")
     @PreAuthorize("hasAnyRole('ADMIN','DOCTOR')")
     @GetMapping
     public ResponseEntity<List<AppointmentResponseDto>>  getAllAppointments(){
@@ -43,6 +45,7 @@ public class AppointmentController {
           return new ResponseEntity<>(appointmentService.getAllAppointments(),HttpStatus.OK) ;
     }
 
+    @Operation(summary = "Get appointment by ID")
     @PreAuthorize("hasAnyRole('ADMIN','DOCTOR')")
     @GetMapping("/{id}")
     public ResponseEntity<AppointmentResponseDto> getAppointmentById(@PathVariable Long id){
@@ -50,6 +53,7 @@ public class AppointmentController {
        return ResponseEntity.ok(appointmentService.getAppointmentById(id));
     }
 
+    @Operation(summary = "Update appointment details")
     @PreAuthorize("hasAnyRole('ADMIN','DOCTOR')")
     @PutMapping("/{id}")
     public  ResponseEntity<AppointmentResponseDto> updateAppointment(@PathVariable Long id,
@@ -58,7 +62,7 @@ public class AppointmentController {
         return ResponseEntity.ok(appointmentService.updateAppointment(id,requestDto));
     }
 
-
+    @Operation(summary = "Delete appointment")
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteAppointment(@PathVariable Long id){
@@ -69,6 +73,7 @@ public class AppointmentController {
         return  ResponseEntity.ok("Appointment deleted successfully");
     }
 
+    @Operation(summary = "Complete the appointment")
     @PreAuthorize("hasAnyRole('ADMIN','DOCTOR')")
     @PutMapping("/{id}/complete")
    public ResponseEntity<AppointmentResponseDto> completeAppointment(@PathVariable Long id){
@@ -77,6 +82,7 @@ public class AppointmentController {
        return  ResponseEntity.ok(appointmentResponseDto);
    }
 
+    @Operation(summary = "Cancel the appointment")
     @PreAuthorize("hasAnyRole('ADMIN','DOCTOR')")
     @PutMapping("/{id}/cancel")
     public  ResponseEntity<AppointmentResponseDto> cancelAppointment(@PathVariable Long id){
