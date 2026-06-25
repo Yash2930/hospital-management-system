@@ -12,7 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
-
+import static org.mockito.Mockito.verify;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -45,6 +45,8 @@ class PatientServiceImplTest {
         assertEquals(1L, response.getId());
         assertEquals("PAT001", response.getPatientCode());
         assertEquals("Rahul", response.getFirstName());
+
+        verify(patientRepository).findById(1L);
     }
 
 
