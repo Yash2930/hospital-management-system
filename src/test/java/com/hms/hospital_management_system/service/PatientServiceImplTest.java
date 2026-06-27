@@ -1,5 +1,6 @@
 package com.hms.hospital_management_system.service;
 
+import com.hms.hospital_management_system.dto.PatientRequestDto;
 import com.hms.hospital_management_system.dto.PatientResponseDto;
 import com.hms.hospital_management_system.entity.Patient;
 import com.hms.hospital_management_system.exception.ResourceNotFoundException;
@@ -16,6 +17,7 @@ import static org.mockito.Mockito.verify;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
 class PatientServiceImplTest {
@@ -59,5 +61,41 @@ class PatientServiceImplTest {
                 ResourceNotFoundException.class,
                 () -> patientService.getPatientById(1L)
         );
+    }
+
+
+    @Test
+    void shouldCreatePatientSuccessfully() {
+
+        // Arrange
+        PatientRequestDto requestDto = new PatientRequestDto();
+        requestDto.setFirstName("Rahul");
+        requestDto.setLastName("Sharma");
+        requestDto.setEmail("rahul@gmail.com");
+        requestDto.setMobileNumber("9876543210");
+
+        Patient savedPatient = new Patient();
+        savedPatient.setId(1L);
+        savedPatient.setPatientCode("PAT001");
+        savedPatient.setFirstName("Rahul");
+        savedPatient.setLastName("Sharma");
+        savedPatient.setEmail("rahul@gmail.com");
+        savedPatient.setMobileNumber("9876543210");
+
+        when(patientRepository.save(any(Patient.class)))
+                .thenReturn(savedPatient);
+
+        // Act
+        PatientResponseDto response = patientService.createPatient(requestDto);
+
+        // Assert
+        assertEquals(1L, response.getId());
+        assertEquals("PAT001", response.getPatientCode());
+        assertEquals("Rahul", response.getFirstName());
+        assertEquals("Sharma", response.getLastName());
+        assertEquals("rahul@gmail.com", response.getEmail());
+        assertEquals("9876543210", response.getMobileNumber());
+
+        verify(patientRepository).save(any(Patient.class));
     }
 }
