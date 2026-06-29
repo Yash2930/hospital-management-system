@@ -98,4 +98,68 @@ class PatientServiceImplTest {
 
         verify(patientRepository).save(any(Patient.class));
     }
+
+
+    @Test
+    void shouldUpdatePatientSuccessfully(){
+
+        // Arrange
+        PatientRequestDto requestDto = new PatientRequestDto();
+        requestDto.setFirstName("Rahul");
+        requestDto.setLastName("Sharma");
+        requestDto.setEmail("rahul@gmail.com");
+        requestDto.setMobileNumber("9876543210");
+
+        Patient existingPatient = new Patient();
+        existingPatient.setId(1L);
+        existingPatient.setPatientCode("PAT001");
+        existingPatient.setFirstName("Old Name");
+        existingPatient.setLastName("Old Last");
+        existingPatient.setEmail("old@gmail.com");
+        existingPatient.setMobileNumber("1111111111");
+
+        Patient updatedPatient = new Patient();
+        updatedPatient.setId(1L);
+        updatedPatient.setPatientCode("PAT001");
+        updatedPatient.setFirstName("Rahul");
+        updatedPatient.setLastName("Sharma");
+        updatedPatient.setEmail("rahul@gmail.com");
+        updatedPatient.setMobileNumber("9876543210");
+
+
+        when(patientRepository.findById(1L))
+                .thenReturn(Optional.of(existingPatient));
+
+        when(patientRepository.save(any(Patient.class)))
+                .thenReturn(updatedPatient);
+
+        // Act
+        PatientResponseDto response =
+                patientService.updatePatient(1L, requestDto);
+
+        // Assert
+        assertEquals(1L, response.getId());
+        assertEquals("PAT001", response.getPatientCode());
+        assertEquals("Rahul", response.getFirstName());
+        assertEquals("Sharma", response.getLastName());
+        assertEquals("rahul@gmail.com", response.getEmail());
+
+        verify(patientRepository).findById(1L);
+        verify(patientRepository).save(any(Patient.class));
+    }
+
+
+    @Test
+    void shouldThrowExceptionWhenUpdatingPatientNotFound() {
+
+        when(patientRepository.findById(1L))
+                .thenReturn(Optional.empty());
+
+        assertThrows(
+                ResourceNotFoundException.class,
+                () -> patientService.updatePatient(1L, new PatientRequestDto())
+        );
+
+        verify(patientRepository).findById(1L);
+    }
 }
