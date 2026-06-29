@@ -11,7 +11,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import static org.mockito.Mockito.verify;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -161,5 +164,67 @@ class PatientServiceImplTest {
         );
 
         verify(patientRepository).findById(1L);
+    }
+
+    @Test
+    void shouldDeletePatientSuccessfully() {
+
+        // Act
+        patientService.deletePatient(1L);
+
+        // Assert
+        verify(patientRepository).deleteById(1L);
+    }
+
+    @Test
+    void shouldSearchPatientsSuccessfully() {
+
+        Patient patient = new Patient();
+        patient.setId(1L);
+        patient.setPatientCode("PAT001");
+        patient.setFirstName("Rahul");
+        patient.setLastName("Sharma");
+        patient.setDisease("Fever");
+
+        when(patientRepository
+                .findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseOrDiseaseContainingIgnoreCase(
+                        "Rah",
+                        "Rah",
+                        "Rah"))
+                .thenReturn(List.of(patient));
+
+        List<PatientResponseDto> response =
+                patientService.searchPatients("Rah");
+
+        assertEquals(1, response.size());
+        assertEquals("Rahul", response.get(0).getFirstName());
+
+        verify(patientRepository)
+                .findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseOrDiseaseContainingIgnoreCase(
+                        "Rah",
+                        "Rah",
+                        "Rah");
+    }
+
+    @Test
+    void shouldReturnEmptyListWhenNoPatientFound() {
+
+        when(patientRepository
+                .findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseOrDiseaseContainingIgnoreCase(
+                        "XYZ",
+                        "XYZ",
+                        "XYZ"))
+                .thenReturn(Collections.emptyList());
+
+        List<PatientResponseDto> response =
+                patientService.searchPatients("XYZ");
+
+        assertTrue(response.isEmpty());
+
+        verify(patientRepository)
+                .findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseOrDiseaseContainingIgnoreCase(
+                        "XYZ",
+                        "XYZ",
+                        "XYZ");
     }
 }
